@@ -99,5 +99,10 @@ class OrderPublic(BaseModel):
     created_at: datetime
     items: List[OrderItemPublic]
 
+
+class UsersByRole(BaseModel):
+    stores: List[UserPublic]
+    customers: List[UserPublic]
+
     class Config:
         from_attributes = True

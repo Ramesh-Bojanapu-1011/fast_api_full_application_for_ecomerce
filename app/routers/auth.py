@@ -27,7 +27,7 @@ def register(user_in: schemas.UserCreate, db: Session = Depends(get_db)):
     return user
 
 
-@router.post("/token", response_model=schemas.Token)
+@router.post("/login", response_model=schemas.Token)
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):
@@ -42,3 +42,16 @@ def login(
 @router.get("/me", response_model=schemas.UserPublic)
 def me(current_user: models.User = Depends(auth.get_current_user)):
     return current_user
+
+
+@router.get("/users", response_model=schemas.UsersByRole)
+def get_all_users(
+    db: Session = Depends(get_db),
+):
+    """Get all users separated by role (stores and customers)"""
+    all_users = db.query(models.User).all()
+
+    stores = [user for user in all_users if user.role == "store"]
+    customers = [user for user in all_users if user.role == "customer"]
+
+    return {"stores": stores, "customers": customers}
