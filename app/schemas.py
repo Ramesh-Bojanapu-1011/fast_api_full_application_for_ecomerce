@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Literal, Optional
+from typing import Literal
 
 from pydantic import BaseModel, EmailStr, conint, constr
 
@@ -30,25 +30,25 @@ class UserPublic(BaseModel):
 
 class ProductCreate(BaseModel):
     name: constr(min_length=2, max_length=255)  # pyright: ignore[reportInvalidTypeForm]
-    description: Optional[str] = None
+    description: str | None = None
     price_cents: conint(ge=0)  # type: ignore
     stock: conint(ge=0) = 0  # pyright: ignore[reportInvalidTypeForm]
 
 
 class ProductUpdate(BaseModel):
-    name: Optional[
-        constr(min_length=2, max_length=255)  # pyright: ignore[reportInvalidTypeForm]
-    ] = None
-    description: Optional[str] = None
-    price_cents: Optional[conint(ge=0)] = None  # pyright: ignore[reportInvalidTypeForm]
-    stock: Optional[conint(ge=0)] = None  # pyright: ignore[reportInvalidTypeForm]
-    is_active: Optional[bool] = None
+    name: constr(min_length=2, max_length=255) | None = ( # pyright: ignore[reportInvalidTypeForm]
+        None  # pyright: ignore[reportInvalidTypeForm]
+    )
+    description: str | None = None
+    price_cents: conint(ge=0) | None = None  # pyright: ignore[reportInvalidTypeForm]
+    stock: conint(ge=0) | None = None  # pyright: ignore[reportInvalidTypeForm]
+    is_active: bool | None = None
 
 
 class ProductPublic(BaseModel):
     id: int
     name: str
-    description: Optional[str]
+    description: str | None
     price_cents: int
     stock: int
     is_active: bool
@@ -78,7 +78,7 @@ class CartItemPublic(BaseModel):
 
 
 class CartPublic(BaseModel):
-    items: List[CartItemPublic]
+    items: list[CartItemPublic]
     subtotal_cents: int
 
 
@@ -97,12 +97,12 @@ class OrderPublic(BaseModel):
     total_cents: int
     status: str
     created_at: datetime
-    items: List[OrderItemPublic]
+    items: list[OrderItemPublic]
 
 
 class UsersByRole(BaseModel):
-    stores: List[UserPublic]
-    customers: List[UserPublic]
+    stores: list[UserPublic]
+    customers: list[UserPublic]
 
     class Config:
         from_attributes = True

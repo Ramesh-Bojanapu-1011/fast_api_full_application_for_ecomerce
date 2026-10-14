@@ -11,11 +11,11 @@ router = APIRouter(prefix="/products", tags=["products"])
 def list_products(
     skip: int = 0,
     limit: int = 50,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     return (
         db.query(models.Product)
-        .filter(models.Product.is_active == True)  # noqa: E712
+        .filter(models.Product.is_active == True)
         .offset(skip)
         .limit(limit)
         .all()
@@ -23,7 +23,7 @@ def list_products(
 
 
 @router.get("/{product_id}", response_model=schemas.ProductPublic)
-def get_product(product_id: int, db: Session = Depends(get_db)):
+def get_product(product_id: int, db: Session = Depends(get_db)):  # noqa: B008
     product = db.query(models.Product).filter(models.Product.id == product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -35,8 +35,8 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
 )
 def create_product(
     payload: schemas.ProductCreate,
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(auth.get_store_user),
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: models.User = Depends(auth.get_store_user),  # noqa: B008
 ):
     product = models.Product(
         name=payload.name,
@@ -54,8 +54,8 @@ def create_product(
 def update_product(
     product_id: int,
     payload: schemas.ProductUpdate,
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(auth.get_store_user),
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: models.User = Depends(auth.get_store_user),  # noqa: B008
 ):
     product = db.query(models.Product).filter(models.Product.id == product_id).first()
     if not product:
@@ -73,8 +73,8 @@ def update_product(
 @router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_product(
     product_id: int,
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(auth.get_store_user),
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: models.User = Depends(auth.get_store_user),  # noqa: B008
 ):
     product = db.query(models.Product).filter(models.Product.id == product_id).first()
     if not product:
@@ -82,4 +82,4 @@ def delete_product(
 
     db.delete(product)
     db.commit()
-    return None
+    return {"detail": "Product deleted successfully"}

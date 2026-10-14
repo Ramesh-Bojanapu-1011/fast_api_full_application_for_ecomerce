@@ -13,8 +13,8 @@ def _cart_subtotal(items: list[models.CartItem]) -> int:
 
 @router.get("/", response_model=schemas.CartPublic)
 def get_cart(
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: models.User = Depends(auth.get_current_user),  # noqa: B008
 ):
     items = (
         db.query(models.CartItem)
@@ -29,8 +29,8 @@ def get_cart(
 )
 def add_item(
     payload: schemas.CartItemCreate,
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: models.User = Depends(auth.get_current_user),  # noqa: B008
 ):
     product = (
         db.query(models.Product).filter(models.Product.id == payload.product_id).first()
@@ -71,8 +71,8 @@ def add_item(
 def update_item(
     item_id: int,
     payload: schemas.CartItemUpdate,
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: models.User = Depends(auth.get_current_user),  # noqa: B008
 ):
     item = (
         db.query(models.CartItem)
@@ -102,8 +102,8 @@ def update_item(
 @router.delete("/items/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
 def remove_item(
     item_id: int,
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: models.User = Depends(auth.get_current_user),  # noqa: B008
 ):
     item = (
         db.query(models.CartItem)
@@ -117,4 +117,4 @@ def remove_item(
 
     db.delete(item)
     db.commit()
-    return None
+    return {"detail": "Cart item removed successfully"}

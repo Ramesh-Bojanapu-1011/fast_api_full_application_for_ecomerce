@@ -13,6 +13,6 @@ def get_db():
         yield db
     except Exception as e:
         print(f"Database error: {e}")
-        raise e
+        raise e  # noqa: TRY201
     finally:
         db.close()

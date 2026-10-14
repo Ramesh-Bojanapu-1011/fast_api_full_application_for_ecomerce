@@ -11,8 +11,8 @@ router = APIRouter(prefix="/orders", tags=["orders"])
     "/", response_model=schemas.OrderPublic, status_code=status.HTTP_201_CREATED
 )
 def create_order(
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: models.User = Depends(auth.get_current_user),# noqa: B008
 ):
     cart_items = (
         db.query(models.CartItem)
@@ -57,8 +57,8 @@ def create_order(
 
 @router.get("/", response_model=list[schemas.OrderPublic])
 def list_orders(
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    db: Session = Depends(get_db),# noqa: B008
+    current_user: models.User = Depends(auth.get_current_user),# noqa: B008
 ):
     return (
         db.query(models.Order)
@@ -71,8 +71,8 @@ def list_orders(
 @router.get("/{order_id}", response_model=schemas.OrderPublic)
 def get_order(
     order_id: int,
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    db: Session = Depends(get_db),# noqa: B008
+    current_user: models.User = Depends(auth.get_current_user),# noqa: B008
 ):
     order = (
         db.query(models.Order)

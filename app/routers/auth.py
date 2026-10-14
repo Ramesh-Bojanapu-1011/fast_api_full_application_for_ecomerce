@@ -11,7 +11,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post(
     "/register", response_model=schemas.UserPublic, status_code=status.HTTP_201_CREATED
 )
-def register(user_in: schemas.UserCreate, db: Session = Depends(get_db)):
+def register(user_in: schemas.UserCreate, db: Session = Depends(get_db)):  # noqa: B008
     existing = auth.get_user_by_email(db, user_in.email)
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -29,7 +29,7 @@ def register(user_in: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=schemas.Token)
 def login(
-    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
+    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)  # noqa: B008
 ):
     user = auth.authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -40,13 +40,13 @@ def login(
 
 
 @router.get("/me", response_model=schemas.UserPublic)
-def me(current_user: models.User = Depends(auth.get_current_user)):
+def me(current_user: models.User = Depends(auth.get_current_user)):  # noqa: B008
     return current_user
 
 
 @router.get("/users", response_model=schemas.UsersByRole)
 def get_all_users(
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Get all users separated by role (stores and customers)"""
     all_users = db.query(models.User).all()

@@ -41,7 +41,7 @@ def authenticate_user(db: Session, email: str, password: str):
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
     to_encode = data.copy()
-    expire = datetime.utcnow() + (
+    expire = datetime.utcnow() + (  # noqa: DTZ003
         expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     )
     to_encode.update({"exp": expire})
@@ -50,7 +50,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
 
 def get_current_user(
     token: str = Depends(oauth2_scheme),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -72,7 +72,7 @@ def get_current_user(
 
 
 def get_store_user(
-    current_user: models.User = Depends(get_current_user),
+    current_user: models.User = Depends(get_current_user),  # noqa: B008
 ):
     if current_user.role != "store":
         raise HTTPException(

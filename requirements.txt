@@ -1,8 +1,10 @@
-fastapi
-uvicorn
-sqlalchemy
-passlib[bcrypt]
-bcrypt<4.0
-python-jose
-python-multipart
-email-validator
+# requirements.txt
+
+
+fastapi==0.143.0
+uvicorn==0.54.0
+SQLAlchemy==2.1.4
+python-jose==3.5.0
+passlib==1.7.4
+email-validator==2.3.0
+python-multipart==0.0.32
