@@ -5,10 +5,9 @@ from app.routers import auth, cart, orders, products
 
 app = FastAPI(title="E-Commerce API")
 
-
-@app.on_event("startup")
-def on_startup():
-    Base.metadata.create_all(bind=engine)
+# Create database tables
+Base.metadata.create_all(bind=engine)
+    
 
 
 @app.get("/")
